@@ -111,7 +111,7 @@ const rps = () => {
   const gameover = () => {
     const over = document.querySelector(".game-over");
     const playAgain = document.querySelector(".game-over button");
-    if (playerScore == 5 || compScore == 5) {
+    if (playerScore == 4 || compScore == 4) {
       introScreen.classList.remove("fadeIn");
       introScreen.classList.add("fadeOut")
       over.classList.remove("fadeOut");
