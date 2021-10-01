@@ -33,7 +33,7 @@ section {
 }
 
 .intro {
-  color: rgb(224, 224, 224);
+  color: rgb(224, 224, 223);
   height: 50vh;
   display: flex;
   flex-direction: column;
@@ -43,7 +43,7 @@ section {
 }
 
 .game-over {
-  color: rgb(224, 224, 224);
+  color: rgb(224, 224, 223);
   height: 50vh;
   position: absolute;
   top: 30%;
@@ -52,7 +52,7 @@ section {
 }
 
 .game-over h1 {
-  font-size: 50px;
+  font-size: 49px;
 }
 
 .game-over button {
