@@ -1,28 +1,42 @@
 const rpsGame = () => {
   let playerScore = 0;
   let compScore = 0;
-  const introScreen = document.querySelector(".match");
+
+  // Cache DOM elements
+  const introScreen = document.querySelector(".intro");
+  const matchScreen = document.querySelector(".match");
+  const gameOverScreen = document.querySelector(".game-over");
+  const playBtn = document.querySelector(".intro button");
+  const optionsBtns = document.querySelectorAll(".options button");
+  const playerHandImg = document.querySelector(".player-hand");
+  const compHandImg = document.querySelector(".computer-hand");
+  const handsImgs = document.querySelectorAll(".hands img");
+  const winnerText = document.querySelector(".winner");
+  const playerScoreDisplay = document.querySelector(".player-score p");
+  const compScoreDisplay = document.querySelector(".computer-score p");
+  const playAgainBtn = document.querySelector(".game-over button");
 
 
-  const start = () => {
-    const playBtn = document.querySelector(".intro button");
-    const fadeScreen = document.querySelector(".intro");
-
-    playBtn.addEventListener("click", () => {
-      fadeScreen.classList.add("fadeOut");
-      introScreen.classList.add("fadeIn");
-      introScreen.classList.remove("fadeOut");
-
-    });
-
+  const disableOptionsButtons = () => {
+    optionsBtns.forEach(btn => btn.disabled = true);
   };
 
+  const enableOptionsButtons = () => {
+    optionsBtns.forEach(btn => btn.disabled = false);
+  };
+
+  // Logic from former 'start' function, now directly in rpsGame scope
+  playBtn.addEventListener("click", () => {
+    introScreen.classList.add("fadeOut");
+    matchScreen.classList.add("fadeIn");
+    matchScreen.classList.remove("fadeOut"); // Ensure match screen is not stuck in fadeOut
+    // Also ensure introScreen is not immediately re-fading in if playAgain was clicked rapidly
+    introScreen.classList.remove("fadeIn"); 
+    enableOptionsButtons(); // Enable option buttons when match starts
+  });
+
   const playMatch = () => {
-    const btns = document.querySelectorAll(".options button");
-    const playerHand = document.querySelector(".player-hand");
-    const compHand = document.querySelector(".computer-hand");
-    const hands = document.querySelectorAll(".hands img");
-    hands.forEach(hand => {
+    handsImgs.forEach(hand => {
       hand.addEventListener("animationend", function () {
         this.style.animation = "";
       });
@@ -31,113 +45,117 @@ const rpsGame = () => {
     //Computer Options
     const computerOptions = ["rock", "paper", "scissors"];
 
-    btns.forEach(option => {
+    optionsBtns.forEach(option => {
       option.addEventListener("click", function () {
+        disableOptionsButtons(); // Disable buttons immediately on click
+
         //Computer Choice
         const compNum = Math.floor(Math.random() * 3);
         const compChoice = computerOptions[compNum];
+
         setTimeout(() => {
           compareHand(this.textContent, compChoice);
-          playerHand.src = `./assets/${this.textContent}.png`;
-          compHand.src = `./assets/${compChoice}.png`;
+          playerHandImg.src = `./assets/${this.textContent}.png`;
+          compHandImg.src = `./assets/${compChoice}.png`;
+
+          // Re-enable buttons only if the game is not over
+          if (playerScore < 4 && compScore < 4) {
+            enableOptionsButtons();
+          }
         }, 1000);
 
-        playerHand.style.animation = "shakePlayer   1s ease";
-        compHand.style.animation = "shakeComputer 1s ease";
+        playerHandImg.style.animation = "shakePlayer   1s ease";
+        compHandImg.style.animation = "shakeComputer 1s ease";
       });
     });
   };
 
+  const handleRoundResult = (playerWins, isTie) => {
+    if (isTie) {
+      winnerText.textContent = "It's a Tie";
+    } else if (playerWins) {
+      winnerText.textContent = "Player wins";
+      playerScore++;
+    } else {
+      winnerText.textContent = "Computer wins";
+      compScore++;
+    }
+    updateCounter();
+    gameover(); // gameover will check if buttons should remain disabled due to game end
+  };
+
   const compareHand = (pChoice, compChoice) => {
-    const winner = document.querySelector(".winner");
     if (pChoice === compChoice) {
-      winner.textContent = "It's a Tie";
+      handleRoundResult(false, true);
       return;
     }
+
     if (pChoice === "rock") {
       if (compChoice === "scissors") {
-        winner.textContent = "Player wins";
-        playerScore++;
-        updateCounter();
-        gameover();
-        return;
+        handleRoundResult(true, false);
       } else {
-        winner.textContent = "Computer wins";
-        compScore++;
-        updateCounter();
-        gameover();
-        return;
+        handleRoundResult(false, false);
       }
+      return;
     }
 
     if (pChoice === "paper") {
       if (compChoice === "rock") {
-        winner.textContent = "Player wins";
-        playerScore++;
-        updateCounter();
-        gameover();
-        return;
+        handleRoundResult(true, false);
       } else {
-        winner.textContent = "Computer wins";
-        compScore++;
-        updateCounter();
-        gameover();
-        return;
+        handleRoundResult(false, false);
       }
+      return;
     }
 
     if (pChoice === "scissors") {
       if (compChoice === "paper") {
-        winner.textContent = "Player wins";
-        playerScore++;
-        updateCounter();
-        gameover();
-        return;
+        handleRoundResult(true, false);
       } else {
-        winner.textContent = "Computer wins";
-        compScore++;
-        updateCounter();
-        gameover();
-        return;
+        handleRoundResult(false, false);
       }
+      return;
     }
   };
+
   const updateCounter = () => {
-    const playerCount = document.querySelector(".player-score p");
-    const computerCount = document.querySelector(".computer-score p");
-    playerCount.textContent = playerScore;
-    computerCount.textContent = compScore;
+    playerScoreDisplay.textContent = playerScore;
+    compScoreDisplay.textContent = compScore;
   };
   const gameover = () => {
-    const over = document.querySelector(".game-over");
-    const playAgain = document.querySelector(".game-over button");
-    if (playerScore == 4 || compScore == 4) {
-      introScreen.classList.remove("fadeIn");
-      introScreen.classList.add("fadeOut")
-      over.classList.remove("fadeOut");
-      over.classList.add("fadeIn");
-
+    if (playerScore === 4 || compScore === 4) { // Use === for strict equality
+      matchScreen.classList.remove("fadeIn");
+      matchScreen.classList.add("fadeOut");
+      gameOverScreen.classList.remove("fadeOut");
+      gameOverScreen.classList.add("fadeIn");
+      // Buttons are already disabled by playMatch.
+      // They will be re-enabled by reset() if "Play Again" is clicked.
     }
-    playAgain.addEventListener("click", () => {
-      over.classList.remove("fadeIn");
-      over.classList.add("fadeOut");
-      introScreen.classList.add("fadeIn");
-      reset();
-    });
-  }
+  };
+
   const reset = () => {
     setTimeout(() => {
-      const playerCount = document.querySelector(".player-score p");
-      const computerCount = document.querySelector(".computer-score p");
       playerScore = 0;
       compScore = 0;
-      playerCount.textContent = 0;
-      computerCount.textContent = 0;
+      playerScoreDisplay.textContent = 0;
+      compScoreDisplay.textContent = 0;
+      winnerText.textContent = "Choose an option";
+      enableOptionsButtons(); // Enable buttons for the new game
+    }, 500);
+  };
 
-    }, .500)
-  }
+  // It's good practice to set up event listeners once.
+  playAgainBtn.addEventListener("click", () => {
+    gameOverScreen.classList.remove("fadeIn");
+    gameOverScreen.classList.add("fadeOut");
+    introScreen.classList.add("fadeIn");
+    matchScreen.classList.remove("fadeIn"); // Hide match screen
+    matchScreen.classList.remove("fadeOut"); // Ensure it's not stuck in fadeOut
+    reset();
+  });
 
-  start();
+  // Call playMatch to set up game logic (event listeners for options)
+  // The initial screen transition is now handled by the playBtn listener above.
   playMatch();
 
 };
