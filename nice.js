@@ -15,6 +15,33 @@ const rpsGame = () => {
   const playerScoreDisplay = document.querySelector(".player-score p");
   const compScoreDisplay = document.querySelector(".computer-score p");
   const playAgainBtn = document.querySelector(".game-over button");
+  const themeSelect = document.getElementById('theme-select'); // Cache theme selector
+
+
+  // Theme switching logic
+  const applyTheme = (themeName) => {
+    if (themeName === 'theme-default') {
+      document.body.className = '';
+    } else {
+      document.body.className = themeName;
+    }
+    localStorage.setItem('selectedTheme', themeName);
+  };
+
+  if (themeSelect) { // Ensure themeSelect exists before adding listener or setting value
+    themeSelect.addEventListener('change', (event) => {
+      applyTheme(event.target.value);
+    });
+
+    // Load and apply saved theme on initialization
+    const savedTheme = localStorage.getItem('selectedTheme');
+    if (savedTheme) {
+      applyTheme(savedTheme);
+      themeSelect.value = savedTheme;
+    } else {
+      applyTheme('theme-default'); // Apply default if no theme is saved
+    }
+  }
 
 
   const disableOptionsButtons = () => {

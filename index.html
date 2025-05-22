@@ -11,6 +11,16 @@
 	</head>
 	<body>
     <div class="container-fluid main">
+      <div class="theme-selector-container" style="text-align: center; padding: 1rem 0; background-color: var(--background-color);">
+        <label for="theme-select" style="color: var(--text-color); font-family: 'Roboto', sans-serif; margin-right: 0.5rem;">Choose a Theme: </label>
+        <select id="theme-select" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid var(--text-color); background-color: var(--background-color); color: var(--text-color);">
+            <option value="theme-default">Default Light</option>
+            <option value="theme-dark">Dark Mode</option>
+            <option value="theme-coffee">Coffee</option>
+            <option value="theme-winter">Winter is Coming</option>
+            <option value="theme-pride">LGBTQ+ Pride</option>
+        </select>
+      </div>
 		<section class="game">
 			<div class="score">
 				<div class="player-score">
@@ -24,8 +34,8 @@
 			</div>
 
 			<div class="intro">
-        <p class="mb-5">Score 4 points to Win</p>
-				<h1 class="mt-4 display-2">Rock Paper and Scissors</h1>
+        <p>Score 4 points to Win</p> <!-- Removed Bootstrap class mb-5 -->
+				<h1>Rock Paper and Scissors</h1> <!-- Removed Bootstrap classes mt-4 display-2 -->
 				<button>Let's Play</button>
 			</div>
       <div class="game-over fadeOut">
