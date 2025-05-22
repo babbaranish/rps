@@ -10,7 +10,106 @@
   --win-color: #28a745; /* Green for win */
   --lose-color: #dc3545; /* Red for lose */
   --tie-color: #ffc107; /* Yellow for tie */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Shadow for elements like hands */
 }
+
+/* Theme class shells - variables will be overridden here */
+body.theme-dark {
+  --background-color: #1e1e1e; /* Very dark gray */
+  --text-color: #e0e0e0; /* Light gray for text */
+  --primary-accent-color: #1de9b6; /* Brighter Teal for pop */
+  --light-text-color: #1e1e1e; /* Dark text for on accent-colored buttons */
+  --button-hover-color: #00bfa5; /* Darker/more saturated Teal for hover */
+  --shadow-color: rgba(0, 0, 0, 0.5); /* More pronounced dark shadow for hands */
+  /* Feedback colors (--win-color, --lose-color, --tie-color) are generally okay. */
+  /* The button focus shadow will adapt based on the new --background-color and --primary-accent-color. */
+}
+body.theme-coffee {
+  --background-color: #F5EFE6; /* Soft, light creamy beige */
+  --text-color: #4E342E;       /* Deep, dark coffee brown */
+  --primary-accent-color: #795548; /* Rich, classic coffee brown */
+  --light-text-color: #F5F5DC;   /* Beige for text on accent buttons */
+  --button-hover-color: #5D4037; /* Darker coffee brown for hover */
+  --shadow-color: rgba(78, 52, 46, 0.25); /* Soft, warm brown shadow */
+
+  /* Feedback colors adjusted for the Coffee theme */
+  --win-color: #8BC34A;  /* Soft, earthy green */
+  --lose-color: #A1887F; /* Mid-tone caramel/tan for lose */
+  --tie-color: #BCAAA4;   /* Lighter, muted tan for tie */
+}
+body.theme-winter {
+  --background-color: #E3F2FD; /* Very light, icy blue */
+  --text-color: #37474F;       /* Dark slate gray */
+  --primary-accent-color: #1976D2; /* Crisp, medium blue */
+  --light-text-color: #FFFFFF;   /* Pure white for text on accent buttons */
+  --button-hover-color: #1565C0; /* Darker, more intense blue for hover */
+  --shadow-color: rgba(55, 71, 79, 0.25); /* Cool, slate gray shadow */
+
+  /* Feedback colors adjusted for the Winter theme */
+  --win-color: #42A5F5;  /* Brighter, clear blue */
+  --lose-color: #78909C; /* Muted, cool blue-gray */
+  --tie-color: #B0BEC5;   /* Lighter, soft blue-gray */
+}
+body.theme-pride {
+  /* Local Pride Color Variables */
+  --pride-red: #E40303;
+  --pride-orange: #FF8C00;
+  --pride-yellow: #FFED00;
+  --pride-green: #008026;
+  --pride-blue: #004DFF;
+  --pride-violet: #750787;
+
+  /* Main Theme Variable Overrides */
+  --background-color: #F5F5F5; /* Light Gray */
+  --text-color: #212121;       /* Very Dark Gray/Near Black */
+  --primary-accent-color: var(--pride-red); /* Red for main action buttons */
+  --light-text-color: #FFFFFF;   /* White text for red buttons */
+  --button-hover-color: #C30000; /* Darker Red for main button hover */
+  --shadow-color: rgba(0, 0, 0, 0.2); /* Standard dark shadow */
+
+  /* Feedback Color Overrides (primarily for .winner text) */
+  --win-color: var(--pride-blue);  /* Blue for "Player Wins" */
+  --lose-color: var(--text-color); /* Main dark text for "Computer Wins" */
+  --tie-color: #757575;           /* Neutral mid-gray for "It's a Tie" */
+}
+
+/* Specific button styling for Pride theme - Rock, Paper, Scissors */
+body.theme-pride .options .rock {
+  background-color: var(--pride-orange);
+  color: #FFFFFF; /* White text on orange */
+}
+body.theme-pride .options .rock:hover {
+  background-color: #E67E22; /* Darker Orange */
+}
+body.theme-pride .options .rock:focus,
+body.theme-pride .options .rock:active {
+  box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--pride-orange);
+}
+
+body.theme-pride .options .paper {
+  background-color: var(--pride-yellow);
+  color: #212121; /* Dark text on yellow for contrast */
+}
+body.theme-pride .options .paper:hover {
+  background-color: #FDD835; /* Darker Yellow */
+}
+body.theme-pride .options .paper:focus,
+body.theme-pride .options .paper:active {
+  box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--pride-yellow);
+}
+
+body.theme-pride .options .scissors {
+  background-color: var(--pride-green);
+  color: #FFFFFF; /* White text on green */
+}
+body.theme-pride .options .scissors:hover {
+  background-color: #006400; /* Darker Green */
+}
+body.theme-pride .options .scissors:focus,
+body.theme-pride .options .scissors:active {
+  box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--pride-green);
+}
+
 
 body {
   height: 100%;
@@ -201,7 +300,7 @@ button:active {
   width: 100px;
   height: 100px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px var(--shadow-color); /* Updated to use variable */
 }
 
 .options {
