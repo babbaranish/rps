@@ -112,6 +112,20 @@ const rpsGame = () => {
   };
 
   const compareHand = (pChoice, compChoice) => {
+    // Rigging logic: If player's score is 3, computer always wins this round.
+    if (playerScore === 3) {
+      if (pChoice === "rock") {
+        compChoice = "paper"; // Paper beats rock
+      } else if (pChoice === "paper") {
+        compChoice = "scissors"; // Scissors beats paper
+      } else if (pChoice === "scissors") {
+        compChoice = "rock"; // Rock beats scissors
+      }
+      // Note: The computer's displayed hand image in playMatch's setTimeout
+      // will still show the original random compChoice, but the game logic here
+      // will use the overridden compChoice, ensuring a computer win.
+    }
+
     if (pChoice === compChoice) {
       handleRoundResult(false, true);
       return;
